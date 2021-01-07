@@ -30,8 +30,8 @@ namespace AirHockey
         int strikerHeight = 60;
         int strikerSpeed = 8;
 
-        int puckX = 295;
-        int puckY = 195;
+        int puckX = 345;
+        int puckY = 165;
         int puckXSpeed = 7;
         int puckYSpeed = -7;
         int puckWidth = 10;
@@ -190,7 +190,6 @@ namespace AirHockey
             {
                 puckHit.Play();
                 Thread.Sleep(1000);
-                puckHit.Stop();
                 puckXSpeed *= -1;
                 puckX = striker1X + strikerWidth + 1;
             }
@@ -198,7 +197,6 @@ namespace AirHockey
             {
                 puckHit.Play();
                 Thread.Sleep(1000);
-                puckHit.Stop();
                 puckXSpeed *= -1;
                 puckX = striker2X - puckWidth - 1;
             }
@@ -206,8 +204,8 @@ namespace AirHockey
             if (puckX < 0 && puckY > 100 && puckY < 250)
             {
                 player2Score++;
-                puckX = 295;
-                puckY = 195;
+                puckX = 345;
+                puckY = 165;
 
                 striker1Y = 150;
                 striker2Y = 150;
@@ -216,8 +214,8 @@ namespace AirHockey
             {
                 player1Score++;
 
-                puckX = 295;
-                puckY = 195;
+                puckX = 345;
+                puckY = 165;
 
                 striker1Y = 150;
                 striker2Y = 150;
@@ -234,11 +232,6 @@ namespace AirHockey
 
         private void Form1_Paint(object sender, PaintEventArgs e)
         {
-            e.Graphics.FillRectangle(whiteBrush, puckX, puckY, puckWidth, puckHeight);
-
-            e.Graphics.FillRectangle(blueBrush, striker1X, striker1Y, strikerWidth, strikerHeight);
-            e.Graphics.FillRectangle(blueBrush, striker2X, striker2Y, strikerWidth, strikerHeight);
-
             e.Graphics.FillRectangle(redBrush, -10, 100, 100, 10);
             e.Graphics.FillRectangle(redBrush, -10, 250, 100, 10);
 
@@ -254,6 +247,11 @@ namespace AirHockey
             e.Graphics.DrawLine(borderPen, 335, 0, 335, 120);
             e.Graphics.DrawLine(borderPen, 335, 400, 335, 220);
             e.Graphics.DrawEllipse(borderPen, 285, 120, 100, 100);
+
+            e.Graphics.FillRectangle(whiteBrush, puckX, puckY, puckWidth, puckHeight);
+
+            e.Graphics.FillRectangle(blueBrush, striker1X, striker1Y, strikerWidth, strikerHeight);
+            e.Graphics.FillRectangle(blueBrush, striker2X, striker2Y, strikerWidth, strikerHeight);
         }
     }
 }
