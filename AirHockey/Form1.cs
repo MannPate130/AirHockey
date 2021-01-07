@@ -1,4 +1,8 @@
-﻿using System;
+﻿/// created by : Mann Patel 
+/// date       : January 7, 2021
+/// description: A Fun Air Hockey/Soccer Game
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -7,29 +11,31 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Media;
+using System.Threading;
 
 namespace AirHockey
 {
     public partial class Form1 : Form
     {
-        int paddle1X = 10;
-        int paddle1Y = 150;
+        int striker1X = 30;
+        int striker1Y = 150;
         int player1Score = 0;
 
-        int paddle2X = 700;
-        int paddle2Y = 150;
+        int striker2X = 680;
+        int striker2Y = 150;
         int player2Score = 0;
 
-        int paddleWidth = 10;
-        int paddleHeight = 60;
-        int paddleSpeed = 8;
+        int strikerWidth = 10;
+        int strikerHeight = 60;
+        int strikerSpeed = 8;
 
         int puckX = 295;
         int puckY = 195;
-        int ballXSpeed = 7;
-        int ballYSpeed = -7;
-        int ballWidth = 10;
-        int ballHeight = 10;
+        int puckXSpeed = 7;
+        int puckYSpeed = -7;
+        int puckWidth = 10;
+        int puckHeight = 10;
 
         bool wDown = false;
         bool sDown = false;
@@ -47,6 +53,8 @@ namespace AirHockey
         Pen borderPen = new Pen(Color.White);
         SolidBrush redBrush = new SolidBrush(Color.Red);
 
+        SoundPlayer airHockeybuzzer = new SoundPlayer(Properties.Resources.air_hockey_buzzer);
+        SoundPlayer puckHit = new SoundPlayer(Properties.Resources.Puck_hit_sound);
 
         public Form1()
         {
@@ -77,7 +85,6 @@ namespace AirHockey
                     leftDown = true; break;
                 case Keys.Right:
                     rightDown = true; break;
-
             }
 
         }
@@ -106,7 +113,6 @@ namespace AirHockey
                     leftDown = false; break;
                 case Keys.Right:
                     rightDown = false; break;
-
             }
 
         }
@@ -114,81 +120,87 @@ namespace AirHockey
         private void gameTimer_Tick(object sender, EventArgs e)
         {
             //move ball
-            puckX -= ballXSpeed;
-            puckY += ballYSpeed;
+            puckX -= puckXSpeed;
+            puckY += puckYSpeed;
 
             //move player 1
-            if (wDown == true && paddle1Y > 0)
+            if (wDown == true && striker1Y > 0)
             {
-                paddle1Y -= paddleSpeed;
+                striker1Y -= strikerSpeed;
             }
 
-            if (sDown == true && paddle1Y < this.Height - paddleHeight)
+            if (sDown == true && striker1Y < this.Height - strikerHeight)
             {
-                paddle1Y += paddleSpeed;
+                striker1Y += strikerSpeed;
             }
 
             //move player 2
-            if (upArrowDown == true && paddle2Y > 0)
+            if (upArrowDown == true && striker2Y > 0)
             {
-                paddle2Y -= paddleSpeed;
+                striker2Y -= strikerSpeed;
             }
 
-            if (downArrowDown == true && paddle2Y < this.Height - paddleHeight)
+            if (downArrowDown == true && striker2Y < this.Height - strikerHeight)
             {
-                paddle2Y += paddleSpeed;
+                striker2Y += strikerSpeed;
             }
 
             //move player 1 left and right
-            if (aDown == true && paddle1X > 0)
+            if (aDown == true && striker1X > 0)
             {
-                paddle1X -= paddleSpeed;
+                striker1X -= strikerSpeed;
             }
 
-            if (dDown == true && paddle1X < this.Width - paddleWidth)
+            if (dDown == true && striker1X < this.Width - strikerWidth)
             {
-                paddle1X += paddleSpeed;
+                striker1X += strikerSpeed;
             }
 
             //move player 2 left and right 
-            if (leftDown == true && paddle2X > 0)
+            if (leftDown == true && striker2X > 0)
             {
-                paddle2X -= paddleSpeed;
+                striker2X -= strikerSpeed;
             }
 
-            if (rightDown == true && paddle2X < this.Width - paddleWidth)
+            if (rightDown == true && striker2X < this.Width - strikerWidth)
             {
-                paddle2X += paddleSpeed;
+                striker2X += strikerSpeed;
             }
 
             //top and bottom wall collision
-            if (puckY < 0 || puckY > this.Height - ballHeight)
+            if (puckY < 0 || puckY > this.Height - puckHeight)
             {
-                ballYSpeed *= -1;  // or: ballYSpeed = -ballYSpeed;
+                puckYSpeed *= -1;  // or: puckYSpeed = -puckYSpeed;
             }
 
             // left and right wall collosion
-            if (puckX < 0 || puckX > this.Width - ballWidth)
+            if (puckX < 0 || puckX > this.Width - puckWidth)
             {
-                ballXSpeed *= -1; 
+                puckXSpeed *= -1; 
             }
 
             //create Rectangles of objects on screen to be used for collision detection
-            Rectangle player1Rec = new Rectangle(paddle1X, paddle1Y, paddleWidth, paddleHeight);
-            Rectangle player2Rec = new Rectangle(paddle2X, paddle2Y, paddleWidth, paddleHeight);
-            Rectangle ballRec = new Rectangle(puckX, puckY, ballWidth, ballHeight);
+            Rectangle player1Rec = new Rectangle(striker1X, striker1Y, strikerWidth, strikerHeight);
+            Rectangle player2Rec = new Rectangle(striker2X, striker2Y, strikerWidth, strikerHeight);
+            Rectangle ballRec = new Rectangle(puckX, puckY, puckWidth, puckHeight);
 
-            //check if ball hits either paddle. If it does change the direction
-            //and place the ball in front of the paddle hit
+            //check if ball hits either Striker. If it does change the direction
+            //and place the ball in front of the Striker hit
             if (player1Rec.IntersectsWith(ballRec))
             {
-                ballXSpeed *= -1;
-                puckX = paddle1X + paddleWidth + 1;
+                puckHit.Play();
+                Thread.Sleep(1000);
+                puckHit.Stop();
+                puckXSpeed *= -1;
+                puckX = striker1X + strikerWidth + 1;
             }
             else if (player2Rec.IntersectsWith(ballRec))
             {
-                ballXSpeed *= -1;
-                puckX = paddle2X - ballWidth - 1;
+                puckHit.Play();
+                Thread.Sleep(1000);
+                puckHit.Stop();
+                puckXSpeed *= -1;
+                puckX = striker2X - puckWidth - 1;
             }
 
             if (puckX < 0 && puckY > 100 && puckY < 250)
@@ -197,8 +209,8 @@ namespace AirHockey
                 puckX = 295;
                 puckY = 195;
 
-                paddle1Y = 150;
-                paddle2Y = 150;
+                striker1Y = 150;
+                striker2Y = 150;
             }
             else if (puckX > 700 && puckY > 100 && puckY < 250)
             {
@@ -207,24 +219,25 @@ namespace AirHockey
                 puckX = 295;
                 puckY = 195;
 
-                paddle1Y = 150;
-                paddle2Y = 150;
+                striker1Y = 150;
+                striker2Y = 150;
             }
 
             if (player1Score == 3 || player2Score == 3)
             {
+                airHockeybuzzer.Play();
                 gameTimer.Enabled = false;
             }
-
+           
             Refresh();
         }
 
         private void Form1_Paint(object sender, PaintEventArgs e)
         {
-            e.Graphics.FillRectangle(whiteBrush, puckX, puckY, ballWidth, ballHeight);
+            e.Graphics.FillRectangle(whiteBrush, puckX, puckY, puckWidth, puckHeight);
 
-            e.Graphics.FillRectangle(blueBrush, paddle1X, paddle1Y, paddleWidth, paddleHeight);
-            e.Graphics.FillRectangle(blueBrush, paddle2X, paddle2Y, paddleWidth, paddleHeight);
+            e.Graphics.FillRectangle(blueBrush, striker1X, striker1Y, strikerWidth, strikerHeight);
+            e.Graphics.FillRectangle(blueBrush, striker2X, striker2Y, strikerWidth, strikerHeight);
 
             e.Graphics.FillRectangle(redBrush, -10, 100, 100, 10);
             e.Graphics.FillRectangle(redBrush, -10, 250, 100, 10);
@@ -235,9 +248,12 @@ namespace AirHockey
             e.Graphics.FillRectangle(redBrush, 90, 100, 10, 160);
             e.Graphics.FillRectangle(redBrush, 620, 100, 10, 160);
 
-            e.Graphics.DrawString($"{player1Score}", screenFont, whiteBrush, 280, 10);
-            e.Graphics.DrawString($"{player2Score}", screenFont, whiteBrush, 310, 10);
+            e.Graphics.DrawString($"{player1Score}", screenFont, whiteBrush, 310, 10);
+            e.Graphics.DrawString($"{player2Score}", screenFont, whiteBrush, 345, 10);
 
+            e.Graphics.DrawLine(borderPen, 335, 0, 335, 120);
+            e.Graphics.DrawLine(borderPen, 335, 400, 335, 220);
+            e.Graphics.DrawEllipse(borderPen, 285, 120, 100, 100);
         }
     }
 }
