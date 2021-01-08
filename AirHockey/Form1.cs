@@ -120,7 +120,7 @@ namespace AirHockey
         private void gameTimer_Tick(object sender, EventArgs e)
         {
             //move ball
-            puckX -= puckXSpeed;
+            puckX += puckXSpeed;
             puckY += puckYSpeed;
 
             //move player 1
@@ -213,7 +213,6 @@ namespace AirHockey
             else if (puckX > 700 && puckY > 100 && puckY < 250)
             {
                 player1Score++;
-
                 puckX = 345;
                 puckY = 165;
 
@@ -241,12 +240,12 @@ namespace AirHockey
             e.Graphics.FillRectangle(redBrush, 90, 100, 10, 160);
             e.Graphics.FillRectangle(redBrush, 620, 100, 10, 160);
 
-            e.Graphics.DrawString($"{player1Score}", screenFont, whiteBrush, 310, 10);
-            e.Graphics.DrawString($"{player2Score}", screenFont, whiteBrush, 345, 10);
-
             e.Graphics.DrawLine(borderPen, 335, 0, 335, 120);
             e.Graphics.DrawLine(borderPen, 335, 400, 335, 220);
             e.Graphics.DrawEllipse(borderPen, 285, 120, 100, 100);
+
+            e.Graphics.DrawString($"{player1Score}", screenFont, whiteBrush, 310, 10);
+            e.Graphics.DrawString($"{player2Score}", screenFont, whiteBrush, 345, 10);
 
             e.Graphics.FillRectangle(whiteBrush, puckX, puckY, puckWidth, puckHeight);
 
