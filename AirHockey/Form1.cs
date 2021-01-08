@@ -16,7 +16,7 @@ using System.Threading;
 
 namespace AirHockey
 {
-    public partial class Form1 : Form
+    public partial class AirHockey : Form
     {
         int striker1X = 30;
         int striker1Y = 150;
@@ -56,7 +56,7 @@ namespace AirHockey
         SoundPlayer airHockeybuzzer = new SoundPlayer(Properties.Resources.air_hockey_buzzer);
         SoundPlayer puckHit = new SoundPlayer(Properties.Resources.Puck_hit_sound);
 
-        public Form1()
+        public AirHockey()
         {
             InitializeComponent();
         }
