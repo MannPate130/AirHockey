@@ -209,6 +209,8 @@ namespace AirHockey
 
                 striker1Y = 150;
                 striker2Y = 150;
+                striker1X = 30;
+                striker2X = 680;
             }
             else if (puckX > 700 && puckY > 100 && puckY < 250)
             {
@@ -218,6 +220,8 @@ namespace AirHockey
 
                 striker1Y = 150;
                 striker2Y = 150;
+                striker1X = 30;
+                striker2X = 680;
             }
 
             if (player1Score == 3 || player2Score == 3)
@@ -225,7 +229,6 @@ namespace AirHockey
                 airHockeybuzzer.Play();
                 gameTimer.Enabled = false;
             }
-           
             Refresh();
         }
 
