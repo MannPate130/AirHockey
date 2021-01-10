@@ -234,6 +234,7 @@ namespace AirHockey
 
         private void Form1_Paint(object sender, PaintEventArgs e)
         {
+            //rectangles for net
             e.Graphics.FillRectangle(redBrush, -10, 100, 100, 10);
             e.Graphics.FillRectangle(redBrush, -10, 250, 100, 10);
 
@@ -243,15 +244,19 @@ namespace AirHockey
             e.Graphics.FillRectangle(redBrush, 90, 100, 10, 160);
             e.Graphics.FillRectangle(redBrush, 620, 100, 10, 160);
 
+            //center circle and middle lines
             e.Graphics.DrawLine(borderPen, 335, 0, 335, 120);
             e.Graphics.DrawLine(borderPen, 335, 400, 335, 220);
             e.Graphics.DrawEllipse(borderPen, 285, 120, 100, 100);
 
+            //displaying player score
             e.Graphics.DrawString($"{player1Score}", screenFont, whiteBrush, 310, 10);
             e.Graphics.DrawString($"{player2Score}", screenFont, whiteBrush, 345, 10);
 
+            //color for the puck
             e.Graphics.FillRectangle(whiteBrush, puckX, puckY, puckWidth, puckHeight);
 
+            //color for the strikers
             e.Graphics.FillRectangle(blueBrush, striker1X, striker1Y, strikerWidth, strikerHeight);
             e.Graphics.FillRectangle(blueBrush, striker2X, striker2Y, strikerWidth, strikerHeight);
         }
