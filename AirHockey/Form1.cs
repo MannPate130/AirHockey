@@ -189,14 +189,12 @@ namespace AirHockey
             if (player1Rec.IntersectsWith(ballRec))
             {
                 puckHit.Play();
-                Thread.Sleep(1000);
                 puckXSpeed *= -1;
                 puckX = striker1X + strikerWidth + 1;
             }
             else if (player2Rec.IntersectsWith(ballRec))
             {
                 puckHit.Play();
-                Thread.Sleep(1000);
                 puckXSpeed *= -1;
                 puckX = striker2X - puckWidth - 1;
             }
